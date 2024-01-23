@@ -1,10 +1,8 @@
 package de.aittr.g_31_2_shop.controllers;
 
 import de.aittr.g_31_2_shop.domain.CommonCustomer;
-import de.aittr.g_31_2_shop.domain.CommonProduct;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
-import de.aittr.g_31_2_shop.domain.interfaces.Product;
-import de.aittr.g_31_2_shop.services.intefaces.CustomerService;
+import de.aittr.g_31_2_shop.services.interfaces.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +20,10 @@ public class CustomerController {
     @PostMapping
     public Customer save(@RequestBody CommonCustomer customer) {
         return service.save(customer);
-
     }
 
     @GetMapping
-    public List<Customer> getAllActiveCustomers () {
+    public List<Customer> getAll() {
         return service.getAllActiveCustomers();
     }
-
 }

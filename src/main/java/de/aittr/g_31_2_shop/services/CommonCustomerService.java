@@ -2,8 +2,7 @@ package de.aittr.g_31_2_shop.services;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.repositories.interfaces.CustomerRepository;
-import de.aittr.g_31_2_shop.services.intefaces.CustomerService;
-import org.springframework.stereotype.Repository;
+import de.aittr.g_31_2_shop.services.interfaces.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +43,41 @@ public class CommonCustomerService implements CustomerService {
 
     @Override
     public void deleteByName(String name) {
+
+    }
+
+    @Override
+    public void restoreById(int id) {
+
+    }
+
+    @Override
+    public int getActiveCustomersCount() {
+        return 0;
+    }
+
+    @Override
+    public double getCartTotalPriceById(int customerId) {
+        return 0;
+    }
+
+    @Override
+    public double getAverageProductPriceById(int customerId) {
+        return 0;
+    }
+
+    @Override
+    public void addProductToCart(int customerId, int productId) {
+
+    }
+
+    @Override
+    public void deleteProductFromCart(int customerId, int productId) {
+
+    }
+
+    @Override
+    public void clearCartById(int customerId) {
 
     }
 }
