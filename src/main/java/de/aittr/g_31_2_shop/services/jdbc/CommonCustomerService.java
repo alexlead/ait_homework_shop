@@ -1,4 +1,4 @@
-package de.aittr.g_31_2_shop.services;
+package de.aittr.g_31_2_shop.services.jdbc;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.repositories.interfaces.CustomerRepository;

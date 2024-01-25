@@ -1,8 +1,8 @@
-package de.aittr.g_31_2_shop.repositories;
+package de.aittr.g_31_2_shop.repositories.jdbc;
 
-import de.aittr.g_31_2_shop.domain.CommonCart;
-import de.aittr.g_31_2_shop.domain.CommonCustomer;
-import de.aittr.g_31_2_shop.domain.CommonProduct;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonCart;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonCustomer;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonProduct;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.aittr.g_31_2_shop.repositories.DBConnector.getConnection;
+import static de.aittr.g_31_2_shop.repositories.jdbc.DBConnector.getConnection;
 
 @Repository
 public class CommonCustomerRepository implements CustomerRepository {
