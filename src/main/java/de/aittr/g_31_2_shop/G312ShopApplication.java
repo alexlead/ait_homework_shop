@@ -9,5 +9,4 @@ public class G312ShopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(G312ShopApplication.class, args);
 	}
-
 }

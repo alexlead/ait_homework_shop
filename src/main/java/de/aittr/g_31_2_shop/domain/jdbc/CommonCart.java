@@ -5,6 +5,7 @@ import de.aittr.g_31_2_shop.domain.interfaces.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CommonCart implements Cart {
 
@@ -28,10 +29,6 @@ public class CommonCart implements Cart {
         this.id = id;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     @Override
     public List<Product> getProducts() {
         return products;
@@ -44,7 +41,7 @@ public class CommonCart implements Cart {
 
     @Override
     public void deleteProductById(int productId) {
-        products.removeIf(p -> p.getId() == productId );
+        products.removeIf(p -> p.getId() == productId);
     }
 
     @Override
@@ -56,7 +53,7 @@ public class CommonCart implements Cart {
     public double getTotalPrice() {
         return products.stream()
                 .filter(p -> p.isActive())
-                .mapToDouble( p -> p.getPrice())
+                .mapToDouble(p -> p.getPrice())
                 .sum();
     }
 
@@ -64,9 +61,22 @@ public class CommonCart implements Cart {
     public double getAveragePrice() {
         return products.stream()
                 .filter(p -> p.isActive())
-                .mapToDouble( p -> p.getPrice())
+                .mapToDouble(p -> p.getPrice())
                 .average()
                 .orElse(0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommonCart that = (CommonCart) o;
+        return id == that.id && Objects.equals(products, that.products);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, products);
     }
 
     @Override

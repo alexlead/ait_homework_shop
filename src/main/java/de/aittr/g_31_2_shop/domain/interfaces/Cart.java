@@ -5,6 +5,7 @@ import java.util.List;
 public interface Cart {
 
     int getId();
+
     void setId(int id);
 
     List<Product> getProducts();
@@ -18,5 +19,4 @@ public interface Cart {
     double getTotalPrice();
 
     double getAveragePrice();
-
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product" )
+@Table(name = "product")
 public class JpaProduct implements Product {
 
     @Id
@@ -75,7 +75,7 @@ public class JpaProduct implements Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JpaProduct that = (JpaProduct) o;
-        return id == that.id && Double.compare(price, that.price) == 0 && isActive == that.isActive && Objects.equals(name, that.name);
+        return id == that.id && Double.compare(that.price, price) == 0 && isActive == that.isActive && Objects.equals(name, that.name);
     }
 
     @Override

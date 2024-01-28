@@ -1,4 +1,4 @@
-package de.aittr.g_31_2_shop.services.intefaces;
+package de.aittr.g_31_2_shop.services.interfaces;
 
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 
@@ -18,11 +18,11 @@ public interface ProductService {
 
     void deleteByName(String name);
 
-    void restoreById (int id);
+    void restoreById(int id);
 
     int getActiveProductCount();
 
-    double getActiveProductTotalPrice();
+    double getActiveProductsTotalPrice();
 
     double getActiveProductAveragePrice();
 }

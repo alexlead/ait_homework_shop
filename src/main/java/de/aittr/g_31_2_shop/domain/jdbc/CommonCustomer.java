@@ -23,14 +23,17 @@ public class CommonCustomer implements Customer {
         this.cart = cart;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public void setActive(boolean active) {
         isActive = active;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -75,7 +78,7 @@ public class CommonCustomer implements Customer {
 
     @Override
     public String toString() {
-        return String.format("Customer: ID - %d, Name - %s, Active - %s, Cart:%n%s",
-                id, name, isActive?"yes":"no", cart);
+        return String.format("Покупатель: ИД - %d, имя - %s, активен - %s, содержимое корзины:%n%s",
+                id, name, isActive ? "да" : "нет", cart);
     }
 }

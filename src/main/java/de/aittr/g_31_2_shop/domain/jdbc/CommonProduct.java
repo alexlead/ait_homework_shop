@@ -28,6 +28,11 @@ public class CommonProduct implements Product {
     }
 
     @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public boolean isActive() {
         return isActive;
     }
@@ -43,16 +48,11 @@ public class CommonProduct implements Product {
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommonProduct that = (CommonProduct) o;
-        return id == that.id && isActive == that.isActive && Double.compare(price, that.price) == 0 && Objects.equals(name, that.name);
+        return id == that.id && isActive == that.isActive && Double.compare(that.price, price) == 0 && Objects.equals(name, that.name);
     }
 
     @Override
@@ -60,10 +60,10 @@ public class CommonProduct implements Product {
         return Objects.hash(id, isActive, name, price);
     }
 
-
     @Override
     public String toString() {
-        return String.format("Id - %d, Name - %s, Price - %.2f, Active - %s",
-                id, name, price, isActive ? "yes" : "no");
+        // ИД - 1, наименование - Банан, цена - 120.00, активен - да.
+        return String.format("ИД - %d, наименование - %s, цена - %.2f, активен - %s.",
+                id, name, price, isActive ? "да" : "нет");
     }
 }

@@ -31,7 +31,7 @@ public class ProductDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductDto that = (ProductDto) o;
-        return id == that.id && Double.compare(price, that.price) == 0 && Objects.equals(name, that.name);
+        return id == that.id && Double.compare(that.price, price) == 0 && Objects.equals(name, that.name);
     }
 
     @Override
@@ -47,5 +47,4 @@ public class ProductDto {
                 ", price=" + price +
                 '}';
     }
-
 }

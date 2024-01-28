@@ -10,10 +10,9 @@ public interface ProductRepository {
 
     List<Product> getAll();
 
-    Product getById( int id);
+    Product getById(int id);
 
-    void update (Product product);
+    void update(Product product);
 
     void deleteById(int id);
-
 }

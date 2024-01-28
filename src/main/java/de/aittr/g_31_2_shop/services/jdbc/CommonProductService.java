@@ -4,7 +4,7 @@ import de.aittr.g_31_2_shop.domain.jdbc.CommonProduct;
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.repositories.interfaces.ProductRepository;
-import de.aittr.g_31_2_shop.services.intefaces.ProductService;
+import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
 
 import java.util.List;
@@ -13,7 +13,6 @@ import java.util.List;
 public class CommonProductService implements ProductService {
 
     private ProductRepository repository;
-
     private ProductMappingService mappingService;
 
     public CommonProductService(ProductRepository repository, ProductMappingService mappingService) {
@@ -24,16 +23,15 @@ public class CommonProductService implements ProductService {
     @Override
     public ProductDto save(ProductDto product) {
         CommonProduct commonProduct = mappingService.mapDtoToCommonProduct(product);
-        Product saveProduct = repository.save(commonProduct);
-        return mappingService.mapEntityToDto(saveProduct);
+        Product savedProduct = repository.save(commonProduct);
+        return mappingService.mapProductEntityToDto(savedProduct);
     }
 
     @Override
     public List<ProductDto> getAllActiveProducts() {
-
         return repository.getAll()
                 .stream()
-                .map(product -> mappingService.mapEntityToDto(product) )
+                .map(p -> mappingService.mapProductEntityToDto(p))
                 .toList();
     }
 
@@ -68,7 +66,7 @@ public class CommonProductService implements ProductService {
     }
 
     @Override
-    public double getActiveProductTotalPrice() {
+    public double getActiveProductsTotalPrice() {
         return 0;
     }
 

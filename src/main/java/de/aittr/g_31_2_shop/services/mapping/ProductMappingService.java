@@ -9,31 +9,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductMappingService {
 
-    public ProductDto mapEntityToDto(Product product) {
-        return new ProductDto(
-                product.getId(),
-                product.getName(),
-                product.getPrice()
-        );
+    public ProductDto mapProductEntityToDto(Product product) {
+        int id = product.getId();
+        String name = product.getName();
+        double price = product.getPrice();
+        return new ProductDto(id, name, price);
     }
 
-
-    public CommonProduct mapDtoToCommonProduct (ProductDto product) {
-        return new CommonProduct(
-                product.getId(),
-                true,
-                product.getName(),
-                product.getPrice()
-        );
+    public CommonProduct mapDtoToCommonProduct(ProductDto product) {
+        int id = product.getId();
+        String name = product.getName();
+        double price = product.getPrice();
+        return new CommonProduct(id, true, name, price);
     }
 
-    public JpaProduct mapDpoToJpaProduct (ProductDto product) {
-        return new JpaProduct(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                true
-        );
+    public JpaProduct mapDtoToJpaProduct(ProductDto product) {
+        int id = product.getId();
+        String name = product.getName();
+        double price = product.getPrice();
+        return new JpaProduct(id, name, price, true);
     }
-
 }
