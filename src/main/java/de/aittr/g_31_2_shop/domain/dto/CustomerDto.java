@@ -1,21 +1,14 @@
 package de.aittr.g_31_2_shop.domain.dto;
 
-import de.aittr.g_31_2_shop.domain.interfaces.Cart;
-
 import java.util.Objects;
 
 public class CustomerDto {
 
     private int id;
     private String name;
-    private Cart cart;
+    private CartDto cart;
 
-    public CustomerDto(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public CustomerDto(int id, String name, Cart cart) {
+    public CustomerDto(int id, String name, CartDto cart) {
         this.id = id;
         this.name = name;
         this.cart = cart;
@@ -25,24 +18,12 @@ public class CustomerDto {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Cart getCart() {
+    public CartDto getCart() {
         return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     @Override

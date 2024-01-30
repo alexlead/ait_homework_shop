@@ -15,54 +15,53 @@ public class JpaCustomer implements Customer {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "is_active")
     private boolean isActive;
 
-    @Transient
-    private Cart cart;
+    @Column(name = "name")
+    private String name;
+
+    @OneToOne(mappedBy = "customer")
+    private JpaCart cart;
 
     public JpaCustomer() {
     }
 
-
-    public JpaCustomer(int id, String name, boolean isActive, Cart cart) {
+    public JpaCustomer(int id, boolean isActive, String name, JpaCart cart) {
         this.id = id;
-        this.name = name;
         this.isActive = isActive;
+        this.name = name;
         this.cart = cart;
     }
 
     @Override
     public int getId() {
-        return 0;
+        return id;
     }
 
     @Override
     public void setId(int id) {
-
+        this.id = id;
     }
 
     @Override
     public boolean isActive() {
-        return false;
+        return isActive;
     }
 
     @Override
-    public void setActive(boolean isActive) {
-
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     @Override
@@ -72,7 +71,11 @@ public class JpaCustomer implements Customer {
 
     @Override
     public void setCart(Cart cart) {
-        this.cart = cart;
+        try {
+            this.cart = (JpaCart) cart;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("В сеттер JpaCustomer передан несовместимый тип корзины!");
+        }
     }
 
     @Override
@@ -80,20 +83,21 @@ public class JpaCustomer implements Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JpaCustomer that = (JpaCustomer) o;
-        return id == that.id && isActive == that.isActive && Objects.equals(name, that.name);
+        return id == that.id && isActive == that.isActive && Objects.equals(name, that.name) && Objects.equals(cart, that.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, isActive);
+        return Objects.hash(id, isActive, name, cart);
     }
 
     @Override
     public String toString() {
         return "JpaCustomer{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", isActive=" + isActive +
+                ", name='" + name + '\'' +
+                ", cart=" + cart +
                 '}';
     }
 }

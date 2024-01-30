@@ -21,49 +21,33 @@ public class ProductController {
         return service.save(product);
     }
 
-    @PostMapping("/update")
-    public void update(@RequestBody ProductDto product) {
-        service.update(product);
-    }
-
     @GetMapping
     public List<ProductDto> getAll() {
         return service.getAllActiveProducts();
     }
 
     @GetMapping("/{id}")
-    public ProductDto getActiveProductById(@PathVariable int id) {
+    public ProductDto getById(@PathVariable int id) {
         return service.getActiveProductById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") int id) {
-        service.deleteById( id );
+    @PutMapping
+    public void update(@RequestBody ProductDto dto) {
+        service.update(dto);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable int id) {
+        service.deleteById(id);
+    }
 
-    @DeleteMapping("/byname/{name}")
-    public void deleteById(@PathVariable String name) {
+    @DeleteMapping("/del_by_name/{name}")
+    public void deleteByName(@PathVariable String name) {
         service.deleteByName(name);
     }
 
-    @DeleteMapping("/restore/{id}")
+    @PutMapping("/{id}")
     public void restoreById(@PathVariable int id) {
         service.restoreById(id);
     }
-
-    @GetMapping("/count")
-    public int getActiveProductCount () {
-        return service.getActiveProductCount();
-    }
-    @GetMapping("/total")
-    public double getActiveProductsTotalPrice () {
-        return service.getActiveProductsTotalPrice();
-    }
-    @GetMapping("/average")
-    public double getActiveProductAveragePrice () {
-        return service.getActiveProductAveragePrice();
-    }
-
-
 }

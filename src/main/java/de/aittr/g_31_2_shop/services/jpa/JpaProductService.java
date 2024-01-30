@@ -6,6 +6,7 @@ import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,16 +32,22 @@ public class JpaProductService implements ProductService {
 
     @Override
     public List<ProductDto> getAllActiveProducts() {
-
-        return repository.getAllActiveProducts()
+        return repository.findAll()
                 .stream()
-                .map(product -> mappingService.mapProductEntityToDto(product))
+                .filter(p -> p.isActive())
+                .map(p -> mappingService.mapProductEntityToDto(p))
                 .toList();
     }
 
     @Override
     public ProductDto getActiveProductById(int id) {
-        return mappingService.mapProductEntityToDto(repository.getActiveProductById(id));
+        Product product = repository.findById(id).orElse(null);
+
+        if (product != null && product.isActive()) {
+            return mappingService.mapProductEntityToDto(product);
+        }
+
+        return null;
     }
 
     @Override
@@ -50,40 +57,47 @@ public class JpaProductService implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
-        JpaProduct entity = repository.getById(id);
-        entity.setActive(false);
-        repository.save(entity);
+        Product product = repository.findById(id).orElse(null);
+
+        if (product != null && product.isActive()) {
+            product.setActive(false);
+        }
     }
 
     @Override
+    @Transactional
     public void deleteByName(String name) {
-        JpaProduct entity = repository.findByName(name);
-        entity.setActive(false);
-        repository.save(entity);
-//        repository.deactivateProductByName(name);
+        Product product = repository.findByName(name);
 
+        if (product != null && product.isActive()) {
+            product.setActive(false);
+        }
     }
 
     @Override
+    @Transactional
     public void restoreById(int id) {
-        JpaProduct entity = repository.getById(id);
-        entity.setActive(true);
-        repository.save(entity);
+        Product product = repository.findById(id).orElse(null);
+
+        if (product != null && !product.isActive()) {
+            product.setActive(true);
+        }
     }
 
     @Override
     public int getActiveProductCount() {
-        return repository.getActiveProductCount();
+        return 0;
     }
 
     @Override
     public double getActiveProductsTotalPrice() {
-        return repository.getActiveProductsTotalPrice();
+        return 0;
     }
 
     @Override
     public double getActiveProductAveragePrice() {
-        return repository.getActiveProductAveragePrice();
+        return 0;
     }
 }
