@@ -1,7 +1,11 @@
 package de.aittr.g_31_2_shop.controllers;
 
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
+import de.aittr.g_31_2_shop.exception_handling.Response;
+import de.aittr.g_31_2_shop.exception_handling.exceptions.FirstTestException;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +21,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDto save(@RequestBody ProductDto product) {
+    public ProductDto save(@Valid @RequestBody ProductDto product) {
         return service.save(product);
     }
 
@@ -49,5 +53,16 @@ public class ProductController {
     @PutMapping("/{id}")
     public void restoreById(@PathVariable int id) {
         service.restoreById(id);
+    }
+
+    // 1 способ - создание метода-обработчика в контроллере, где мы ожидаем ошибки
+    // Минус - если в разных контроллерах требуется обрабатывать ошибки одинаково,
+    // то нам придётся написать один и тот же обработчик в разных контроллерах.
+    // Плюс - если в разных контроллерах требуется обрабатывать ошибки по-разному,
+    // то такой подход позволяет нам это сделать.
+    @ExceptionHandler(FirstTestException.class)
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    public Response handleException(FirstTestException e) {
+        return new Response(e.getMessage());
     }
 }
