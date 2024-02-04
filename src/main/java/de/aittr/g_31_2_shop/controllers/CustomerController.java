@@ -32,4 +32,20 @@ public class CustomerController {
     public CustomerDto getById(@PathVariable int id) {
         return service.getActiveCustomerById(id);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable int id) {
+        service.deleteById(id);
+    }
+
+    @DeleteMapping("/del_by_name/{name}")
+    public void deleteByName(@PathVariable String name) {
+        service.deleteByName(name);
+    }
+
+    @PutMapping("/{id}")
+    public void restoreById(@PathVariable int id) {
+        service.restoreById(id);
+    }
+
 }

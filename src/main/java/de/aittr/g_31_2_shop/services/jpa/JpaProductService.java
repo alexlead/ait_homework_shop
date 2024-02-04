@@ -4,6 +4,8 @@ import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
 import de.aittr.g_31_2_shop.exception_handling.exceptions.FourthTestException;
+import de.aittr.g_31_2_shop.exception_handling.exceptions.IllegalProductIdRequestedException;
+import de.aittr.g_31_2_shop.exception_handling.exceptions.MissingDataRequestException;
 import de.aittr.g_31_2_shop.exception_handling.exceptions.ThirdTestException;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
@@ -38,7 +40,7 @@ public class JpaProductService implements ProductService {
             entity = repository.save(entity);
             return mappingService.mapProductEntityToDto(entity);
         } catch (Exception e) {
-            throw new FourthTestException(e.getMessage());
+            throw new MissingDataRequestException(e.getMessage());
         }
     }
 
@@ -69,7 +71,7 @@ public class JpaProductService implements ProductService {
             return mappingService.mapProductEntityToDto(product);
         }
 
-        throw new ThirdTestException("Продукт с указанным идентификатором отсутствует в базе данных.");
+        throw new IllegalArgumentException("Продукт с указанным идентификатором отсутствует в базе данных.");
     }
 
     @Override
@@ -83,8 +85,10 @@ public class JpaProductService implements ProductService {
     public void deleteById(int id) {
         Product product = repository.findById(id).orElse(null);
 
-        if (product != null && product.isActive()) {
+        try{
             product.setActive(false);
+        } catch (Exception e) {
+            throw new IllegalProductIdRequestedException("Deleted a product by wrong Id");
         }
     }
 
@@ -93,8 +97,10 @@ public class JpaProductService implements ProductService {
     public void deleteByName(String name) {
         Product product = repository.findByName(name);
 
-        if (product != null && product.isActive()) {
+        try{
             product.setActive(false);
+        } catch (Exception e) {
+            throw new IllegalProductIdRequestedException("Deleted a product by wrong name");
         }
     }
 
@@ -103,10 +109,12 @@ public class JpaProductService implements ProductService {
     public void restoreById(int id) {
         Product product = repository.findById(id).orElse(null);
 
-        if (product != null && !product.isActive()) {
+        try{
             product.setActive(true);
+        } catch (Exception e) {
+            throw new IllegalProductIdRequestedException("Restored a product by wrong Id");
         }
-        System.out.println("*****");
+
     }
 
     @Override
