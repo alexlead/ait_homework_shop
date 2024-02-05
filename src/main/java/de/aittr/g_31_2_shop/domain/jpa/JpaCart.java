@@ -4,6 +4,8 @@ import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import jakarta.persistence.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +33,15 @@ public class JpaCart implements Cart {
     private JpaCustomer customer;
 
     public JpaCart() {
+        Logger logger = LoggerFactory.getLogger(JpaCart.class);
+        logger.info("JpaCart constructor was called.");
     }
 
     public JpaCart(int id, List<JpaProduct> products) {
         this.id = id;
         this.products = products;
+        Logger logger = LoggerFactory.getLogger(JpaCart.class);
+        logger.info(String.format("JpaCart %d constructor was called.", id));
     }
 
     @Override

@@ -2,7 +2,6 @@ package de.aittr.g_31_2_shop.domain.jdbc;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
-import jakarta.persistence.Column;
 
 import java.util.Objects;
 
@@ -13,10 +12,6 @@ public class CommonCustomer implements Customer {
     private String name;
     private Cart cart;
 
-    private int age;
-
-    private String email;
-
     public CommonCustomer() {
         this.isActive = true;
     }
@@ -26,15 +21,6 @@ public class CommonCustomer implements Customer {
         this.isActive = isActive;
         this.name = name;
         this.cart = cart;
-    }
-
-    public CommonCustomer(int id, boolean isActive, String name, Cart cart, int age, String email) {
-        this.id = id;
-        this.isActive = isActive;
-        this.name = name;
-        this.cart = cart;
-        this.age = age;
-        this.email = email;
     }
 
     @Override
@@ -78,47 +64,21 @@ public class CommonCustomer implements Customer {
     }
 
     @Override
-    public int getAge() {
-        return age;
-    }
-
-    @Override
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommonCustomer that = (CommonCustomer) o;
-        return id == that.id && isActive == that.isActive && age == that.age && Objects.equals(name, that.name) && Objects.equals(cart, that.cart) && Objects.equals(email, that.email);
+        return id == that.id && isActive == that.isActive && Objects.equals(name, that.name) && Objects.equals(cart, that.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isActive, name, cart, age, email);
+        return Objects.hash(id, isActive, name, cart);
     }
 
     @Override
     public String toString() {
-        return "CommonCustomer{" +
-                "id=" + id +
-                ", isActive=" + isActive +
-                ", name='" + name + '\'' +
-                ", cart=" + cart +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format("Покупатель: ИД - %d, имя - %s, активен - %s, содержимое корзины:%n%s",
+                id, name, isActive ? "да" : "нет", cart);
     }
 }

@@ -3,9 +3,8 @@ package de.aittr.g_31_2_shop.domain.jpa;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -22,22 +21,14 @@ public class JpaCustomer implements Customer {
     private boolean isActive;
 
     @Column(name = "name")
-    @Pattern(regexp = "^([A-Za-z\\-\\']{1,50})|([А-Яа-я\\-\\']{1,50})$")
     private String name;
-
-    @Column(name = "age")
-    @Min(10)
-    @Max(100)
-    private int age;
-
-    @Column(name = "email")
-    @Pattern(regexp = "^((([0-9A-Za-z]{1}[-0-9A-z\\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\\.){1,2}[-A-Za-z]{2,})$")
-    private String email;
 
     @OneToOne(mappedBy = "customer")
     private JpaCart cart;
 
     public JpaCustomer() {
+        Logger logger = LoggerFactory.getLogger(JpaCustomer.class);
+        logger.info("JpaCustomer constructor was called.");
     }
 
     public JpaCustomer(int id, boolean isActive, String name, JpaCart cart) {
@@ -45,15 +36,8 @@ public class JpaCustomer implements Customer {
         this.isActive = isActive;
         this.name = name;
         this.cart = cart;
-    }
-
-    public JpaCustomer(int id, boolean isActive, String name, int age, String email, JpaCart cart) {
-        this.id = id;
-        this.isActive = isActive;
-        this.name = name;
-        this.age = age;
-        this.email = email;
-        this.cart = cart;
+        Logger logger = LoggerFactory.getLogger(JpaCustomer.class);
+        logger.info(String.format("JpaCustomer ID %d constructor was called.", id));
     }
 
     @Override
@@ -92,24 +76,6 @@ public class JpaCustomer implements Customer {
     }
 
     @Override
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    @Override
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
     public void setCart(Cart cart) {
         try {
             this.cart = (JpaCart) cart;
@@ -123,12 +89,12 @@ public class JpaCustomer implements Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JpaCustomer that = (JpaCustomer) o;
-        return id == that.id && isActive == that.isActive && age == that.age && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(cart, that.cart);
+        return id == that.id && isActive == that.isActive && Objects.equals(name, that.name) && Objects.equals(cart, that.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isActive, name, age, email, cart);
+        return Objects.hash(id, isActive, name, cart);
     }
 
     @Override
@@ -137,8 +103,6 @@ public class JpaCustomer implements Customer {
                 "id=" + id +
                 ", isActive=" + isActive +
                 ", name='" + name + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
                 ", cart=" + cart +
                 '}';
     }

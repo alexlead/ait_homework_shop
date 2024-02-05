@@ -2,7 +2,6 @@ package de.aittr.g_31_2_shop.services.jpa;
 
 import de.aittr.g_31_2_shop.domain.dto.CustomerDto;
 import de.aittr.g_31_2_shop.domain.jpa.JpaCustomer;
-import de.aittr.g_31_2_shop.exception_handling.exceptions.IllegalCustomerIdRequestedException;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaCustomerRepository;
 import de.aittr.g_31_2_shop.services.interfaces.CustomerService;
 import de.aittr.g_31_2_shop.services.mapping.CustomerMappingService;
@@ -23,26 +22,12 @@ public class JpaCustomerService implements CustomerService {
 
     @Override
     public CustomerDto save(CustomerDto customer) {
-
-        try {
-            JpaCustomer entity = mappingService.mapDtoToJpaCustomer(customer);
-            entity.setId(0);
-            entity = repository.save(entity);
-            return mappingService.mapCustomerEntityToDto(entity);
-        } catch (Exception e) {
-            throw new IllegalCustomerIdRequestedException(e.getMessage());
-        }
-
-
+        return null;
     }
 
     @Override
     public List<CustomerDto> getAllActiveCustomers() {
-        return repository.findAll()
-                .stream()
-                .filter(c -> c.isActive())
-                .map(c -> mappingService.mapCustomerEntityToDto(c))
-                .toList();
+        return null;
     }
 
     @Override
@@ -58,35 +43,22 @@ public class JpaCustomerService implements CustomerService {
 
     @Override
     public void update(CustomerDto customer) {
-        JpaCustomer entity = mappingService.mapDtoToJpaCustomer(customer);
-        repository.save(entity);
+
     }
 
     @Override
     public void deleteById(int id) {
-        JpaCustomer entity = repository.findById(id).orElse(null);
 
-        if (entity != null && entity.isActive()) {
-            entity.setActive(false);
-        }
     }
 
     @Override
     public void deleteByName(String name) {
-        JpaCustomer entity= repository.findByName(name);
 
-        if (entity != null && entity.isActive()) {
-            entity.setActive(false);
-        }
     }
 
     @Override
     public void restoreById(int id) {
-        JpaCustomer entity = repository.findById(id).orElse(null);
 
-        if (entity != null && !entity.isActive()) {
-            entity.setActive(true);
-        }
     }
 
     @Override

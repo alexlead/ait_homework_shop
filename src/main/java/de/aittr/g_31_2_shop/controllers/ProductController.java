@@ -65,4 +65,19 @@ public class ProductController {
     public Response handleException(FirstTestException e) {
         return new Response(e.getMessage());
     }
+
+    @GetMapping("/count")
+    public int getCount() {
+        return service.getActiveProductCount();
+    }
+
+    @GetMapping("/total")
+    public double getTotalPrice() {
+        return service.getActiveProductsTotalPrice();
+    }
+
+    @GetMapping("/average")
+    public double getAveragePrice() {
+        return service.getActiveProductAveragePrice();
+    }
 }

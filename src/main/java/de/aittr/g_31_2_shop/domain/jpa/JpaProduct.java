@@ -1,8 +1,11 @@
 package de.aittr.g_31_2_shop.domain.jpa;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
+import de.aittr.g_31_2_shop.services.jpa.JpaProductService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -37,6 +40,8 @@ public class JpaProduct implements Product {
     private boolean isActive;
 
     public JpaProduct() {
+        Logger logger = LoggerFactory.getLogger(JpaProduct.class);
+        logger.info("JpaProduct constructor was called.");
     }
 
     public JpaProduct(int id, String name, double price, boolean isActive) {
@@ -44,6 +49,8 @@ public class JpaProduct implements Product {
         this.name = name;
         this.price = price;
         this.isActive = isActive;
+        Logger logger = LoggerFactory.getLogger(JpaProduct.class);
+        logger.info(String.format("JpaProduct %d constructor was called.", id));
     }
 
     @Override
