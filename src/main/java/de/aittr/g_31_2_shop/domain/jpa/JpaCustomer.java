@@ -3,8 +3,6 @@ package de.aittr.g_31_2_shop.domain.jpa;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import jakarta.persistence.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -27,8 +25,6 @@ public class JpaCustomer implements Customer {
     private JpaCart cart;
 
     public JpaCustomer() {
-        Logger logger = LoggerFactory.getLogger(JpaCustomer.class);
-        logger.info("JpaCustomer constructor was called.");
     }
 
     public JpaCustomer(int id, boolean isActive, String name, JpaCart cart) {
@@ -36,8 +32,6 @@ public class JpaCustomer implements Customer {
         this.isActive = isActive;
         this.name = name;
         this.cart = cart;
-        Logger logger = LoggerFactory.getLogger(JpaCustomer.class);
-        logger.info(String.format("JpaCustomer ID %d constructor was called.", id));
     }
 
     @Override

@@ -47,7 +47,7 @@ public class JpaProductService implements ProductService {
 
     @Override
     public List<ProductDto> getAllActiveProducts() {
-        Task task = new Task("Method called");
+        Task task = new Task("Method getAllActiveProducts called");
         ScheduleExecutor.scheduleAndExecuteTask(task);
         // здесь будет JoinPoint, сюда будет внедряться вспомогательный код
         return repository.findAll()

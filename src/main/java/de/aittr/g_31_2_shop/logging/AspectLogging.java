@@ -3,13 +3,9 @@ package de.aittr.g_31_2_shop.logging;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
 
 @Aspect
 @Component
@@ -18,8 +14,7 @@ public class AspectLogging {
     private Logger logger = LoggerFactory.getLogger(AspectLogging.class);
 
     @Pointcut("execution(* de.aittr.g_31_2_shop.services.jpa.JpaProductService.getAllActiveProducts(..))")
-    public void getProducts() {
-    }
+    public void getProducts() {}
 
     @Before("getProducts()")
     public void beforeGetProducts() {
@@ -27,8 +22,7 @@ public class AspectLogging {
     }
 
     @Pointcut("execution(* de.aittr.g_31_2_shop.services.jpa.JpaProductService.restoreById(int))")
-    public void restoreProduct() {
-    }
+    public void restoreProduct() {}
 
     @After("restoreProduct()")
     public void afterRestoreProduct(JoinPoint joinPoint) {
@@ -54,8 +48,7 @@ public class AspectLogging {
     }
 
     @Pointcut("execution(* de.aittr.g_31_2_shop.services.jpa.JpaProductService.getActiveProductById(int))")
-    public void getActiveProductById() {
-    }
+    public void getActiveProductById() {}
 
     @AfterReturning(
             pointcut = "getActiveProductById()",
@@ -78,9 +71,7 @@ public class AspectLogging {
     }
 
     @Pointcut("execution(* de.aittr.g_31_2_shop.services.jpa.JpaProductService.getActiveProductCount(..))")
-    public void getActiveProductCount() {
-    }
-
+    public void getActiveProductCount() {}
 
     @Around("getActiveProductCount()")
     public Object aroundGettingProductCount(ProceedingJoinPoint joinPoint) {
@@ -102,81 +93,6 @@ public class AspectLogging {
                 "за {} миллисекунд с результатом {}.", time, result);
 
         logger.info("Подменяем действительный результат на своё значение - 500.");
-        return result;
+        return 500;
     }
-
-    @Pointcut("execution(* de.aittr.g_31_2_shop.services.jpa.JpaProductService.*(..))")
-    public void logAllProductEvents() {
-    }
-
-    @Before("logAllProductEvents()")
-    public void beforeReturningProductEventLogger(JoinPoint joinPoint) {
-        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
-        Object[] arguments = joinPoint.getArgs();
-
-        if (arguments.length > 0 ) {
-            logger.info("Метод {} вызван с параметрами {} ", method, arguments);
-        } else {
-            logger.info("Метод {} вызван без параметров ", method);
-        }
-
-    }
-
-    @After("logAllProductEvents()")
-    public void afterReturningProductEventLogger(JoinPoint joinPoint) {
-        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
-        logger.info("Метод {} завершен ", method);
-
-    }
-
-
-    @AfterReturning(
-        pointcut = "logAllProductEvents()",
-        returning = "result"
-    )
-    public void afterReturningProductEventLogger1(JoinPoint joinPoint, Object result) {
-        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
-        logger.info("Метод {} завершен и успешно вернул результат: {}.", method, result);
-    }
-
-    @AfterThrowing(
-        pointcut = "logAllProductEvents()",
-        throwing = "e"
-    )
-    public void afterReturningProductEventLogger2(JoinPoint joinPoint, Exception e) {
-        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
-        logger.info("Метод {} завершен и выбросил ошибку: {}.", method, e.getMessage());
-    }
-
-
-    @Pointcut("execution(* de.aittr.g_31_2_shop.services.*.*.*(..))")
-    public void logAllServiceEvents() {
-    }
-
-    @Before("logAllServiceEvents()")
-    public void beforeAnyServiceEventLogger(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String className = signature.getClass().getName();
-        String method = signature.getMethod().getName();
-
-        Object[] arguments = joinPoint.getArgs();
-
-        if (arguments.length > 0 ) {
-            Object id = joinPoint.getArgs()[0];
-            logger.info("Метод {} класса {} вызван с параметром {} ", method, className, id);
-        } else {
-            logger.info("Метод {} класса {} вызван без параметров ", method, className);
-        }
-
-    }
-
-    @After("logAllServiceEvents()")
-    public void afterAnyServiceEventLogger(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String className = signature.getClass().getName();
-        String method = signature.getMethod().getName();
-        logger.info("Метод {} класса {} завершён.", method, className);
-
-    }
-
 }

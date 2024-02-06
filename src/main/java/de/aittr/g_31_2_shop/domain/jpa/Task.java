@@ -6,29 +6,31 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name="task")
+@Table(name = "task")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
-    @Column(name="description")
-    private String descriiption;
-    @Column(name="executed_at")
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "executed_at")
     private Timestamp executedAt;
 
     public Task() {
         executedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public Task(String descriiption) {
-        this.descriiption = descriiption;
+    public Task(String description) {
+        this.description = description;
         executedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public String getDescriiption() {
-        return descriiption;
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -36,19 +38,19 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(descriiption, task.descriiption) && Objects.equals(executedAt, task.executedAt);
+        return id == task.id && Objects.equals(description, task.description) && Objects.equals(executedAt, task.executedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, descriiption, executedAt);
+        return Objects.hash(id, description, executedAt);
     }
 
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", descriiption='" + descriiption + '\'' +
+                ", description='" + description + '\'' +
                 ", executedAt=" + executedAt +
                 '}';
     }

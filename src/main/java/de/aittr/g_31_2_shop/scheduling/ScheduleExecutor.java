@@ -28,65 +28,96 @@ public class ScheduleExecutor {
     }
 
 //    @Scheduled(fixedDelay = 5000)
-//    public void fixedDelayTask () {
-//        System.out.println("Fixed delay task");
+//    public void fixedDelayTask() {
+//        taskService.createTask("Fixed delay task");
+//    }
+
+//    @Scheduled(fixedDelay = 5000)
+//    public void fixedDelayTask() {
+//        taskService.createTask("Fixed delay task 3000 ms");
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+//    @Scheduled(fixedDelay = 5000)
+//    public void fixedDelayTask() {
+//        taskService.createTask("Fixed delay task 7000 ms");
+//        try {
+//            Thread.sleep(7000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 //    }
 
 //    @Scheduled(fixedRate = 5000)
-//    public void fixedDelayTask () {
+//    public void fixedRateTask() {
 //        taskService.createTask("Fixed rate task 3000 ms");
-//        try{
+//        try {
 //            Thread.sleep(3000);
-//        } catch ( InterruptedException e) {
+//        } catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
-//
+//    }
+
+//    @Scheduled(fixedRate = 5000)
+//    public void fixedRateTask() {
+//        taskService.createTask("Fixed rate task 7000 ms");
+//        try {
+//            Thread.sleep(7000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 //    }
 
 //    @Scheduled(fixedRate = 5000)
 //    @Async
-//    public void fixedRateAsyncTask () {
+//    public void fixedRateAsyncTask() {
 //        taskService.createTask("Fixed rate async task 7000 ms");
-//        try{
+//        try {
 //            Thread.sleep(7000);
-//        } catch ( InterruptedException e) {
+//        } catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
-//
-//    }
-//    @Scheduled(fixedRate = 5000, initialDelay = 10000)
-//    public void fixedDelayTask () {
-//        taskService.createTask("Initial delay task 7000 ms");
-//
-//    }
-//    @Scheduled(fixedDelayString = "PT3S")
-//    public void fixedDelayTask () {
-//        taskService.createTask("Delay String format task 7000 ms");
-//
-//    }
-//    @Scheduled(cron = "10,30 * * * * *")
-//    public void cronExpressionTask () {
-//        taskService.createTask("Cron format task");
-//
 //    }
 
-//    public static void scheduleAndExecuteTask (Task task) {
+//    @Scheduled(fixedDelay = 5000, initialDelay = 20000)
+//    public void initialDelayTask() {
+//        taskService.createTask("Initial delay task");
+//    }
+
+    // 2 hours -> 7200000 milliseconds -> PT2H
+
+//    @Scheduled(fixedDelayString = "PT3S")
+//    public void anotherDelayFormatTask() {
+//        taskService.createTask("Another delay format task");
+//    }
+
+    // 55 * * * * * -> каждую минуту в момент времени 55 секунд
+    // 0 10,20 * * * * -> каждый час в 10 минут и в 20 минут
+    // 0 15 9-17 * * MON-FRI -> по будням с 9 до 17 в 15 минут каждого часа
+
+//    @Scheduled(cron = "10,30 * * * * *")
+//    public void cronExpressionTask() {
+//        taskService.createTask("Cron expression task");
+//    }
+
+//    public static void scheduleAndExecuteTask(Task task) {
 //        TaskScheduler scheduler = new DefaultManagedTaskScheduler();
 //        scheduler.schedule(
-//                ()-> logger.info(task.getDescriiption()),
+//                () -> logger.info(task.getDescription()),
 //                new CronTrigger("0,10,20,30,40,50 * * * * *")
 //        );
-//
 //    }
 
-    public static void scheduleAndExecuteTask (Task task) {
+    public static void scheduleAndExecuteTask(Task task) {
         TaskScheduler scheduler = new DefaultManagedTaskScheduler();
         Instant instant = Instant.now().plusSeconds(30);
         scheduler.schedule(
-                ()-> logger.info(task.getDescriiption()),
+                () -> logger.info(task.getDescription()),
                 instant
         );
-
     }
-
 }
