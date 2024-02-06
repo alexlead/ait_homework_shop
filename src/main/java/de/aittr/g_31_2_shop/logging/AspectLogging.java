@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 @Aspect
 @Component
@@ -110,14 +111,11 @@ public class AspectLogging {
 
     @Before("logAllProductEvents()")
     public void beforeReturningProductEventLogger(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String method = signature.getMethod().getName();
-
+        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
         Object[] arguments = joinPoint.getArgs();
 
         if (arguments.length > 0 ) {
-            Object id = joinPoint.getArgs()[0];
-            logger.info("Метод {} вызван с параметром {} ", method, id);
+            logger.info("Метод {} вызван с параметрами {} ", method, arguments);
         } else {
             logger.info("Метод {} вызван без параметров ", method);
         }
@@ -126,10 +124,28 @@ public class AspectLogging {
 
     @After("logAllProductEvents()")
     public void afterReturningProductEventLogger(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String method = signature.getMethod().getName();
+        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
         logger.info("Метод {} завершен ", method);
 
+    }
+
+
+    @AfterReturning(
+        pointcut = "logAllProductEvents()",
+        returning = "result"
+    )
+    public void afterReturningProductEventLogger1(JoinPoint joinPoint, Object result) {
+        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
+        logger.info("Метод {} завершен и успешно вернул результат: {}.", method, result);
+    }
+
+    @AfterThrowing(
+        pointcut = "logAllProductEvents()",
+        throwing = "e"
+    )
+    public void afterReturningProductEventLogger2(JoinPoint joinPoint, Exception e) {
+        String method = joinPoint.getSignature().getDeclaringType().getSimpleName();
+        logger.info("Метод {} завершен и выбросил ошибку: {}.", method, e.getMessage());
     }
 
 

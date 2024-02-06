@@ -3,10 +3,12 @@ package de.aittr.g_31_2_shop.services.jpa;
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
+import de.aittr.g_31_2_shop.domain.jpa.Task;
 import de.aittr.g_31_2_shop.exception_handling.exceptions.FourthTestException;
 import de.aittr.g_31_2_shop.exception_handling.exceptions.ProductValidationException;
 import de.aittr.g_31_2_shop.exception_handling.exceptions.ThirdTestException;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
+import de.aittr.g_31_2_shop.scheduling.ScheduleExecutor;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
 import jakarta.transaction.Transactional;
@@ -45,6 +47,8 @@ public class JpaProductService implements ProductService {
 
     @Override
     public List<ProductDto> getAllActiveProducts() {
+        Task task = new Task("Method called");
+        ScheduleExecutor.scheduleAndExecuteTask(task);
         // здесь будет JoinPoint, сюда будет внедряться вспомогательный код
         return repository.findAll()
                 .stream()
