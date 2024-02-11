@@ -4,6 +4,8 @@ import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import jakarta.persistence.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "cart")
 public class JpaCart implements Cart {
+
+    /*
+    Домашнее задание 17
+    1. Применить логирование в энтити-классах, залогировать вызов конструкторов, методов (без применения АОП).
+    Добавил только пару примеров.
+     */
+    private static Logger logger = LoggerFactory.getLogger(JpaCart.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +40,11 @@ public class JpaCart implements Cart {
     private JpaCustomer customer;
 
     public JpaCart() {
+        logger.info("Cart without id specification created");
     }
 
     public JpaCart(int id, List<JpaProduct> products) {
+        logger.info("Cart with id [{}] created", id);
         this.id = id;
         this.products = products;
     }
@@ -58,6 +69,8 @@ public class JpaCart implements Cart {
     public void addProduct(Product product) {
         try {
             products.add((JpaProduct) product);
+            logger.info("Product id [{}] added to cart id [{}]",
+                    product.getId(), id);
         } catch (Exception e) {
             throw new IllegalArgumentException("В корзину JpaCart помещён несовместимый тип продукта!");
         }

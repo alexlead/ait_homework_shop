@@ -1,10 +1,13 @@
 package de.aittr.g_31_2_shop.services.jpa;
 
 import de.aittr.g_31_2_shop.domain.dto.CustomerDto;
+import de.aittr.g_31_2_shop.domain.jpa.JpaCart;
 import de.aittr.g_31_2_shop.domain.jpa.JpaCustomer;
+import de.aittr.g_31_2_shop.exception_handling.exceptions.CustomerValidationException;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaCustomerRepository;
 import de.aittr.g_31_2_shop.services.interfaces.CustomerService;
 import de.aittr.g_31_2_shop.services.mapping.CustomerMappingService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +24,21 @@ public class JpaCustomerService implements CustomerService {
     }
 
     @Override
-    public CustomerDto save(CustomerDto customer) {
-        return null;
+    @Transactional
+    public CustomerDto save(CustomerDto dto) {
+        JpaCustomer entity = mappingService.mapDtoToJpaCustomer(dto);
+        JpaCart cart = new JpaCart();
+        entity.setCart(cart);
+        cart.setCustomer(entity);
+
+        try {
+            entity = repository.save(entity);
+        } catch (Exception e) {
+            throw new CustomerValidationException("Incorrect values of customer fields.", e);
+        }
+
+        dto = mappingService.mapCustomerEntityToDto(entity);
+        return dto;
     }
 
     @Override

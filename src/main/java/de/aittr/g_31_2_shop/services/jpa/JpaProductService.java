@@ -4,16 +4,12 @@ import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
 import de.aittr.g_31_2_shop.domain.jpa.Task;
-import de.aittr.g_31_2_shop.exception_handling.exceptions.FourthTestException;
-import de.aittr.g_31_2_shop.exception_handling.exceptions.ProductValidationException;
-import de.aittr.g_31_2_shop.exception_handling.exceptions.ThirdTestException;
+import de.aittr.g_31_2_shop.exception_handling.exceptions.*;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
 import de.aittr.g_31_2_shop.scheduling.ScheduleExecutor;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +21,7 @@ public class JpaProductService implements ProductService {
 
     private JpaProductRepository repository;
     private ProductMappingService mappingService;
-//    private Logger logger = LogManager.getLogger(JpaProductService.class);
+    //    private Logger logger = LogManager.getLogger(JpaProductService.class);
     private Logger logger = LoggerFactory.getLogger(JpaProductService.class);
 
     public JpaProductService(JpaProductRepository repository, ProductMappingService mappingService) {
@@ -45,16 +41,30 @@ public class JpaProductService implements ProductService {
         }
     }
 
+    /*
+    Домашнее задание 15
+    3. Подумать, какие нештатные ситуации могут возникать при работе сервиса продуктов (для этого реализовать его до конца),
+    создать для них соответствующие эксепшены (минимум 3). Эксепшены должны быть
+    названы правильно, то есть название должно отражать суть причины ошибки.
+    4. Выбросить эти эксепшены в нужных местах и обработать при помощи адвайса.
+     */
     @Override
     public List<ProductDto> getAllActiveProducts() {
-        Task task = new Task("Method getAllActiveProducts called");
-        ScheduleExecutor.scheduleAndExecuteTask(task);
+//        Task task = new Task("Method getAllActiveProducts called");
+//        ScheduleExecutor.scheduleAndExecuteTask(task);
         // здесь будет JoinPoint, сюда будет внедряться вспомогательный код
-        return repository.findAll()
+
+        List<ProductDto> products = repository.findAll()
                 .stream()
                 .filter(p -> p.isActive())
                 .map(p -> mappingService.mapProductEntityToDto(p))
                 .toList();
+
+        if (products.isEmpty()) {
+            throw new NoActiveProductsFoundException("There are no active products in the database");
+        }
+
+        return products;
     }
 
     @Override
@@ -70,11 +80,17 @@ public class JpaProductService implements ProductService {
 
         Product product = repository.findById(id).orElse(null);
 
-        if (product != null && product.isActive()) {
-            return mappingService.mapProductEntityToDto(product);
+        if (product == null) {
+            throw new ProductNotFoundException(String.format(
+                    "There is no product with id [%d] in the database", id));
         }
 
-        throw new ThirdTestException("Продукт с указанным идентификатором отсутствует в базе данных.");
+        if (!product.isActive()) {
+            throw new InactiveProductException(String.format(
+                    "Product with id [%d] is inactive and cannot be retrieved", id));
+        }
+
+        return mappingService.mapProductEntityToDto(product);
     }
 
     @Override
@@ -138,5 +154,18 @@ public class JpaProductService implements ProductService {
                 .mapToDouble(p -> p.getPrice())
                 .average()
                 .orElse(0);
+    }
+
+    /*
+    Домашнее задание 18
+    2. Реализовать вывод в консоль последнего добавленного в БД товара.
+    Вывод должен производиться в 15 и 45 секунд каждой минуты.
+    Задача должна быть сохранена в БД.
+    Вывод в консоль должен быть осуществлён через логирование поля description созданной задачи.
+    Пример значения поля description - "Последний добавленный в БД продукт - Банан".
+     */
+
+    public JpaProduct getLastProduct() {
+        return repository.getLastProduct();
     }
 }

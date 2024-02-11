@@ -1,6 +1,8 @@
 package de.aittr.g_31_2_shop.scheduling;
 
 import de.aittr.g_31_2_shop.domain.jpa.Task;
+import de.aittr.g_31_2_shop.services.interfaces.ProductService;
+import de.aittr.g_31_2_shop.services.jpa.JpaProductService;
 import de.aittr.g_31_2_shop.services.jpa.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.List;
 
 @Component
 @EnableScheduling
@@ -21,13 +24,15 @@ import java.time.Instant;
 public class ScheduleExecutor {
 
     private TaskService taskService;
+    private JpaProductService productService;
     private static Logger logger = LoggerFactory.getLogger(ScheduleExecutor.class);
 
-    public ScheduleExecutor(TaskService taskService) {
+    public ScheduleExecutor(TaskService taskService, JpaProductService productService) {
         this.taskService = taskService;
+        this.productService = productService;
     }
 
-//    @Scheduled(fixedDelay = 5000)
+    //    @Scheduled(fixedDelay = 5000)
 //    public void fixedDelayTask() {
 //        taskService.createTask("Fixed delay task");
 //    }
@@ -112,12 +117,40 @@ public class ScheduleExecutor {
 //        );
 //    }
 
-    public static void scheduleAndExecuteTask(Task task) {
-        TaskScheduler scheduler = new DefaultManagedTaskScheduler();
-        Instant instant = Instant.now().plusSeconds(30);
-        scheduler.schedule(
-                () -> logger.info(task.getDescription()),
-                instant
-        );
-    }
+//    public static void scheduleAndExecuteTask(Task task) {
+//        TaskScheduler scheduler = new DefaultManagedTaskScheduler();
+//        Instant instant = Instant.now().plusSeconds(30);
+//        scheduler.schedule(
+//                () -> logger.info(task.getDescription()),
+//                instant
+//        );
+//    }
+
+    /*
+    Домашнее задание 18
+    1. Реализовать вывод в консоль каждые 30 секунд списка последних пяти выполненных задач.
+    Время выполнения предыдущей задачи не должно влиять на старт следующей.
+    Создавать новую задачу и логировать ничего не нужно.
+     */
+
+//    @Scheduled(fixedRateString = "PT30S")
+//    public void printLastFiveTasks() {
+//        System.out.println("Last five tasks:");
+//        taskService.getLastTasks(5).forEach(System.out::println);
+//    }
+
+    /*
+    Домашнее задание 18
+    2. Реализовать вывод в консоль последнего добавленного в БД товара.
+    Вывод должен производиться в 15 и 45 секунд каждой минуты.
+    Задача должна быть сохранена в БД.
+    Вывод в консоль должен быть осуществлён через логирование поля description созданной задачи.
+    Пример значения поля description - "Последний добавленный в БД продукт - Банан".
+     */
+
+//    @Scheduled(cron = "15,45 * * * * *")
+//    public void printLastAddedProduct() {
+//        taskService.createTask("Last added to database product: " +
+//                productService.getLastProduct());
+//    }
 }

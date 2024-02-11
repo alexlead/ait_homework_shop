@@ -5,7 +5,6 @@ import de.aittr.g_31_2_shop.domain.dto.CustomerDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.domain.jdbc.CommonCustomer;
-import de.aittr.g_31_2_shop.domain.jpa.JpaCart;
 import de.aittr.g_31_2_shop.domain.jpa.JpaCustomer;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +17,32 @@ public class CustomerMappingService {
         this.cartMappingService = cartMappingService;
     }
 
+    /*
+    Домашнее задание 15
+    1. Добавить покупателю два дополнительных поля - возраст и емейл (и в БД тоже).
+     */
     public CustomerDto mapCustomerEntityToDto(Customer customer) {
         int id = customer.getId();
         String name = customer.getName();
         CartDto cartDto = cartMappingService.mapCartEntityToDto(customer.getCart());
-        return new CustomerDto(id, name, cartDto);
+        int age = customer.getAge();
+        String email = customer.getEmail();
+        return new CustomerDto(id, name, cartDto, age, email);
     }
 
     public CommonCustomer mapDtoToCommonCustomer(CustomerDto dto) {
         int id = dto.getId();
         String name = dto.getName();
         Cart cart = cartMappingService.mapDtoToCommonCart(dto.getCart());
-        return new CommonCustomer(id, true, name, cart);
+        int age = dto.getAge();
+        String email = dto.getEmail();
+        return new CommonCustomer(id, true, name, cart, age, email);
     }
 
     public JpaCustomer mapDtoToJpaCustomer(CustomerDto dto) {
-        int id = dto.getId();
         String name = dto.getName();
-        JpaCart cart = cartMappingService.mapDtoToJpaCart(dto.getCart());
-        return new JpaCustomer(id, true, name, cart);
+        int age = dto.getAge();
+        String email = dto.getEmail();
+        return new JpaCustomer(0, true, name, age, email, null);
     }
 }

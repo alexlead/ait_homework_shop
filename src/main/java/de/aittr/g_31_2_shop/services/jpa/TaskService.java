@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
 
@@ -20,5 +22,16 @@ public class TaskService {
         logger.info(description);
         Task task = new Task(description);
         repository.save(task);
+    }
+
+    /*
+    Домашнее задание 18
+    1. Реализовать вывод в консоль каждые 30 секунд списка последних пяти выполненных задач.
+    Время выполнения предыдущей задачи не должно влиять на старт следующей.
+    Создавать новую задачу и логировать ничего не нужно.
+    */
+
+    public List<Task> getLastTasks(int count) {
+        return repository.findLastTasks(count);
     }
 }
