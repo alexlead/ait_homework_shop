@@ -133,6 +133,15 @@ public class ScheduleExecutor {
     Создавать новую задачу и логировать ничего не нужно.
      */
 
+//    @Scheduled(fixedRate = 30000)
+//    @Async
+//    public void printLastFiveTasksEveryThirtySeconds () {
+//        System.out.println(
+//                taskService.getLastTasks(5)
+//        );
+//    }
+
+
 //    @Scheduled(fixedRateString = "PT30S")
 //    public void printLastFiveTasks() {
 //        System.out.println("Last five tasks:");

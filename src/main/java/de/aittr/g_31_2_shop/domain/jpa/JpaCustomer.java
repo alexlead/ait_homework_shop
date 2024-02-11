@@ -1,5 +1,6 @@
 package de.aittr.g_31_2_shop.domain.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.exception_handling.exceptions.IncorrectEntityTypeException;
@@ -42,8 +43,12 @@ public class JpaCustomer implements Customer {
     @Email(message = "Некорректные значения email не допускаются")
     private String email;
 
+    @Column(name = "user_id")
+    private int userId;
+
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private JpaCart cart;
+
 
     public JpaCustomer() {
     }
